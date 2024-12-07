@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  pg-db:
+    image: postgres:17.2
+    environment:
+      POSTGRES_DB: pismo
+      POSTGRES_USER: pismo
+      POSTGRES_PASSWORD: pismo
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pismo"]
+      timeout: 5s
+      retries: 10
+    ports:
+      - 5432:5432
+
+  migrator:
+    image: ${MIGRATOR_IMAGE}
+    environment:
+      DB_DSN: "postgres://pismo:pismo@pg-db/pismo?sslmode=disable"
+      SCRIPTS_PATH: /migrations
+      DB_NAME: pismo
+    depends_on:
+      pg-db:
+        condition: service_healthy
