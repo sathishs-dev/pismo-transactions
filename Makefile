@@ -6,24 +6,32 @@ BUILD_TAG 		= build-local
 IMAGE 			= ${SERVICE_NAME}:${BUILD_TAG}
 MIGRATOR_IMAGE  = pismo-migrator:${BUILD_TAG}
 
-DOCKER_COMPSOE 	= docker compose --file docker-compose.yml
+DOCKER_COMPOSE 	= docker compose --file docker-compose.yml
 
 export MIGRATOR_IMAGE
+export IMAGE
 
-build:
+build: build-service build-migrator
+
+build-service:
+	@echo "==> Building the service ..."
+	docker build --pull --tag ${IMAGE} \
+		--build-arg importPath=${IMPORT_PATH} \
+		--build-arg pkg=${PKG_SRC} .
 
 build-migrator:
 	docker build --tag ${MIGRATOR_IMAGE} \
 	 -f migrator.Dockerfile .
 
-migrate: build-migrator
-	${DOCKER_COMPSOE} up --no-recreate -d 
+run-service: build-migrator build-service
+	${DOCKER_COMPOSE} up --no-recreate -d 
+	docker compose logs -f pismo-transactions
 
 down:
-	${DOCKER_COMPSOE} down -v --remove-orphans
+	${DOCKER_COMPOSE} down -v --remove-orphans
 
 logs:
-	${DOCKER_COMPSOE} logs -f
+	${DOCKER_COMPOSE} logs -f
 
 dep:
 	go mod tidy
