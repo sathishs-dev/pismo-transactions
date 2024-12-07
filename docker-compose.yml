@@ -17,7 +17,7 @@ services:
   migrator:
     image: ${MIGRATOR_IMAGE}
     environment:
-      DB_DSN: "postgres://pismo:pismo@pg-db/pismo?sslmode=disable"
+      DB_DSN: "postgres://pismo:pismo@pismo-db/pismo?sslmode=disable"
       SCRIPTS_PATH: /migrations
       DB_NAME: pismo
     depends_on:
@@ -27,7 +27,7 @@ services:
   pismo-transactions:
     image: ${IMAGE}
     environment:
-      PISMO_DB_DSN: "postgres://pismo:pismo@pg-db/pismo?sslmode=disable"
+      PISMO_DB_DSN: "postgres://pismo:pismo@pismo-db/pismo?sslmode=disable"
       LOG_LEVEL: "info"
       SHUTDOWN_TIMEOUT: "5s"
     depends_on:

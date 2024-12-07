@@ -8,14 +8,17 @@ import (
 )
 
 func initWebServer(l zerolog.Logger, h handler.Handler) server.HTTPServer {
-	web := chi.NewRouter()
+	web := chi.NewMux()
 	web.Use(
 		loggerMiddleware(l),
 	)
 
 	web.Route("/accounts", func(r chi.Router) {
 		r.Post("/", h.CreateAccount())
+		r.Get("/{accountId}", h.GetAccount())
 	})
+
+	web.Post("/transactions", h.CreateTransaction())
 
 	return server.New(web)
 }
