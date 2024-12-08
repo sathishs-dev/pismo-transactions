@@ -54,7 +54,7 @@ func (h *handlerTestSuite) TestCreateAccount() {
 				h.repo.On("CreateAccount", mock.Anything, "1234567890").
 					Return(nil)
 			},
-			expectedStatusCode: http.StatusAccepted,
+			expectedStatusCode: http.StatusCreated,
 		},
 		{
 			name:               "Invalid Create Account Request - Empty Payload",
@@ -199,7 +199,7 @@ func (h *handlerTestSuite) TestCreateTransaction() {
 					repository.Transaction{AccountID: 1, OperationTypeID: 1, Amount: -500.00},
 				).Return(nil)
 			},
-			expectedStatusCode: http.StatusAccepted,
+			expectedStatusCode: http.StatusCreated,
 		},
 		{
 			name:               "Invalid Create Transaction Request - Empty Payload",

@@ -65,7 +65,7 @@ func (h *handler) CreateAccount() http.HandlerFunc {
 			return
 		}
 
-		err = writer.WriteJSON(w, http.StatusAccepted, nil)
+		err = writer.WriteJSON(w, http.StatusCreated, nil)
 		if err != nil {
 			log.Error().Err(err).Msg("failed to write")
 			return
@@ -175,7 +175,7 @@ func (h *handler) CreateTransaction() http.HandlerFunc {
 			return
 		}
 
-		if err := writer.WriteJSON(w, http.StatusAccepted, nil); err != nil {
+		if err := writer.WriteJSON(w, http.StatusCreated, nil); err != nil {
 			log.Error().Err(err).Msg("failed to write")
 			return
 		}

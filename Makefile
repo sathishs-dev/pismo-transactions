@@ -27,7 +27,7 @@ build-service:
 
 run-service: unit-test build-migrator build-service
 	@echo "==> Launching the Service..."
-	${DOCKER_COMPOSE} up
+	${DOCKER_COMPOSE} up -d
 
 # Unit Test
 build-unit-test:
